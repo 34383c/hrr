@@ -44,7 +44,6 @@ function vadd(x::Array{Float64, 1}, y::Array{Float64, 1}; debug=false)
     x+y
 end
 
-# TODO: ::Vector instead of ::Array{Float64, 1}? (Need to make sure cconv is valid for any type of vector)
 # UNBINDING -- involution of a vector (approximate inverse of a vector with respect to circular convolution).
 function invol(x::Vector; debug=false)
     @assert(length(x) > 0, "the length of the vector must be greater than zero")
