@@ -1,5 +1,11 @@
 module hrr
 
+# TODO: ::Vector{T} (or ::AbstractVector{T} (whats the difference?)) instead of
+#       ::Array{Float64, 1}, where T <: Real? (If implem for diff types are too
+#       diff, consider methods?)
+# TODO: throw argument errors instead of asserts?
+# TODO: consider removing the debug functionality?
+
 # move to another file?
 # would a macro be better?
 # print vectors
@@ -10,7 +16,6 @@ end
 
 export cconv, vadd, invol
 
-# TODO: ::Vector instead of ::Array{Float64, 1}? (Need to make sure cconv is valid for any type of vector)
 # BINDING -- circular convolution of two vectors with the same dimensions
 function cconv(x::Array{Float64, 1}, y::Array{Float64, 1}; debug=false)
     @assert(length(x) > 0 && length(y) > 0, "the length of the vectors must be greater than zero")
@@ -36,7 +41,7 @@ end
 # TODO: ::Vector instead of ::Array{Float64, 1}? (Need to make sure cconv is valid for any type of vector)
 # SUPERPOSITION -- vector addition
 function vadd(x::Array{Float64, 1}, y::Array{Float64, 1}; debug=false)
-    @assert(length(x) > 0 && length(y) > 0, "the length of the vectors must be greater than zero")
+    isempty(x) && throw(ArgumentError("argument must not be empty"))
     if debug
         println("x = $x")
         println("y = $y")
@@ -46,7 +51,7 @@ end
 
 # UNBINDING -- involution of a vector (approximate inverse of a vector with respect to circular convolution).
 function invol(x::Vector; debug=false)
-    @assert(length(x) > 0, "the length of the vector must be greater than zero")
+    isempty(x) && throw(ArgumentError("argument must not be empty"))
     if debug
         printv(x)
     end
