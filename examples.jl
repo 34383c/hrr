@@ -7,11 +7,18 @@ function printv{T <: Real}(x::AbstractVector{T})
     println("    $(join(length(x) > 7 ? [x[1:3];"...";x[end-2:end]] : x, "  "))")
 end
 
-println("####### START OF EXAMPLES #######\n")
+println("####### START OF EXAMPLES #######")
 
-# array of pairs of examples? (to easily enumerate them?)
-println("Example 1.  Given a vector x = [1, 2, 3, 4, 5], the involution of x ",
-        "should return the vector x_bar = [1, 5, 4, 3, 2].")
-printv(hrr.invol([1, 2, 3, 4, 5]))
+index = 1
+for test in (
+("Given a vector x = [1, 2, 3, 4, 5], the involution of x should return the vector x_bar = [1, 5, 4, 3, 2].",
+        :(hrr.invol([1, 2, 3, 4, 5]))),
+("Vector with more than 7 elements.",
+        :([7,7,7,7,7,7,7,7,7,7])),
+)
+    println("\n\n\nExample $index.   $(test[1])")
+    printv(eval(test[2]))
+    index += 1
+end
 
-println("\n######## END OF EXAMPLES ########")
+println("\n\n\n######## END OF EXAMPLES ########")
