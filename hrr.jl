@@ -40,4 +40,20 @@ function invol{T <: Real}(x::AbstractVector{T})
     return [x[mod(-i + 1, length(x)) + 1] for i in 1:length(x)]
 end
 
+function getIDvector(dimension::Int64 = 512)
+    # Return a uniformly distributed (see Note 1) random vector from the
+    # D-dimensional unit hypersphere (See Note 2).
+    #
+    # Note 1: we use the fact that a normalised D-dimensional random Gaussian
+    # (i.e. normally-distributed) vector is uniformly distributed over the
+    # D-dimensional unit hypersphere.
+    #
+    # Note 2: A vector from the D-dimensional unit hypersphere is a unit
+    # D-dimensional vector, i.e. a D-dimensional vector with vector norm
+    # (i.e. L-2 norm) equal to 1.
+
+    random_gaussian_vector = randn(dimension)
+    return random_gaussian_vector / norm(random_gaussian_vector)
+end
+
 end # module hrr
