@@ -5,9 +5,7 @@ module hrr
 
 export cconv, vadd, invol
 
-type AssociativeMemory <: Tuple
-    #am::Tuple{Tuple{AbstractVector, AbstractVector}}
-end
+typealias AssociativeMemory Vector{Tuple{AbstractVector, AbstractVector, AbstractString}}
 
 # BINDING -- circular convolution of two vectors with the same dimensions
 function cconv{T <: Real}(x::AbstractVector{T}, y::AbstractVector{T})
@@ -62,16 +60,22 @@ function getIDvector(dimensions::Integer = 512)
 end
 
 const threshold = 0.3
-function associate{T <: Real}(x::AbstractVector{T}, assoc_mem::AssociativeMemory)
-    if isempty(x)
-        throw(ArgumentError("argument must not be empty"))
+function associate{T <: Real}(input::AbstractVector{T}, assoc_mem::AssociativeMemory)
+    if isempty(input) || isempty(assoc_mem)
+        throw(ArgumentError("arguments must not be empty"))
     end
 
-    sum = zeros(x)
-    for i in 1:length(associative_memory)
-        similarity = dot(associative_memory[i,1], x)
+    sum = zeros(input)
+    for (sp, id, name) in assoc_mem
+        similarity = dot(id, input)
         scale = (similarity > threshold) ? 1 : 0
-        sum += scale * associative_memory[i,2]
+        # if similarity > threshold
+        #     if sum != zeros(sum)
+        #         println("Found first id vector from assoc mem that exceeds the similarity threshold ($(name))")
+        #         sum = sp
+        #     else
+        #         println("OOPS! Similarity threshold was exceeded for more than one id vector from the assoc mem ($(name))")
+        sum += scale * sp
     end
     return sum
 end

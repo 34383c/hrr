@@ -7,6 +7,9 @@ function printv{T <: Real}(x::AbstractVector{T})
     println("    $(join(length(x) > 7 ? [x[1:3];"...";x[end-2:end]] : x, "  "))")
 end
 
+# define Vector{Pair{AbstractString,AbstractVector}} list of relationship types (for now just: class and member)
+# define Associative Memory of all synsets (for now just: dog, canine, pack)
+
 println("####### START OF EXAMPLES #######")
 
 index = 1
