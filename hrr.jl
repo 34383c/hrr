@@ -3,12 +3,12 @@ module hrr
 # TODO: introduce in-place methods?
 # TODO: doc-strings?
 
-export cconv, vadd, invol
+export cconv, vadd, invol, getidvec
 
 typealias AssociativeMemory Vector{Tuple{AbstractVector, AbstractVector, AbstractString}}
 
 # BINDING -- circular convolution of two vectors with the same dimensions
-function cconv{T <: Real}(x::AbstractVector{T}, y::AbstractVector{T})
+function cconv(x::Vector{Float64}, y::Vector{Float64})
     if isempty(x) || isempty(y)
         throw(ArgumentError("arguments must not be empty"))
     end
@@ -26,7 +26,7 @@ function cconv{T <: Real}(x::AbstractVector{T}, y::AbstractVector{T})
 end
 
 # SUPERPOSITION -- vector addition
-function vadd{T <: Real}(x::AbstractVector{T}, y::AbstractVector{T})
+function vadd(x::Vector{Float64}, y::Vector{Float64})
     if isempty(x) || isempty(y)
         throw(ArgumentError("arguments must not be empty"))
     end
@@ -35,7 +35,7 @@ function vadd{T <: Real}(x::AbstractVector{T}, y::AbstractVector{T})
 end
 
 # UNBINDING -- involution of a vector (approximate inverse of a vector with respect to circular convolution).
-function invol{T <: Real}(x::AbstractVector{T})
+function invol(x::Vector{Float64})
     if isempty(x)
         throw(ArgumentError("argument must not be empty"))
     end
@@ -43,7 +43,7 @@ function invol{T <: Real}(x::AbstractVector{T})
     return [x[mod(-i + 1, length(x)) + 1] for i in 1:length(x)]
 end
 
-function getIDvector(dimensions::Integer = 512)
+function getidvec(dimensions::Integer = 512)
     # Return a uniformly distributed (see Note 1) random vector from the
     # D-dimensional unit hypersphere (see Note 2).
     #
@@ -60,7 +60,7 @@ function getIDvector(dimensions::Integer = 512)
 end
 
 const threshold = 0.3
-function associate{T <: Real}(input::AbstractVector{T}, assoc_mem::AssociativeMemory)
+function associate(input::Vector{Float64}, assoc_mem::AssociativeMemory)
     if isempty(input) || isempty(assoc_mem)
         throw(ArgumentError("arguments must not be empty"))
     end
