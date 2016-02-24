@@ -7,10 +7,6 @@ function printv(x::Vector{Float64})
     println("    $(join(length(x) > 7 ? [x[1:3];"...";x[end-2:end]] : x, "  "))")
 end
 
-# define Vector{Pair{AbstractString,AbstractVector}} list of relationship types (for now just: class and member)
-relationships = Dict("class" => getidvec(), "member" => getidvec())
-# define Associative Memory of all synsets (for now just: dog, canine, pack)
-
 function example1()
     println("Given a vector x = [1, 2, 3, 4, 5], the involution of x should ",
             "return the vector x_bar = [1, 5, 4, 3, 2].")
@@ -23,6 +19,20 @@ function example1()
     println("\n\n")
 end
 
+function example2()
+    println("...")
+    relationships = Dict(
+            "class"  => hrr.getidvec(),
+            "member" => hrr.getidvec()
+            )
+    synsets = Dict(
+            "dog"    => [hrr.getidvec() Vector{Float64}(512)],
+            "canine" => [hrr.getidvec() Vector{Float64}(512)],
+            "pack"   => [hrr.getidvec() Vector{Float64}(512)]
+    )
+    # to get dog's id vec: synsets["dog"][:, 1]
+    # similarly, for the sp: synsets["dog"][:, 2] 
+end
 
 println("####### START OF EXAMPLES #######\n\n\n")
 
