@@ -21,17 +21,22 @@ end
 
 function example2()
     println("...")
-    relationships = Dict(
+    relationships = Dict{ASCIIString, Vector{Float64}}(
             "class"  => hrr.getidvec(),
             "member" => hrr.getidvec()
             )
-    synsets = Dict(
+    synsets = Dict{ASCIIString, Array{Float64, 2}}(
             "dog"    => [hrr.getidvec() Vector{Float64}(512)],
             "canine" => [hrr.getidvec() Vector{Float64}(512)],
             "pack"   => [hrr.getidvec() Vector{Float64}(512)]
-    )
+            )
+
     # to get dog's id vec: synsets["dog"][:, 1]
-    # similarly, for the sp: synsets["dog"][:, 2] 
+    # similarly, for the sp: synsets["dog"][:, 2]
+    # to associate: hrr.associate(vec, collect(values(synsets)))
+    dog_sp = hrr.cconv(relationships["class"], synsets["canine"][:, 1])
+            + hrr.cconv(relationships["member"], synsets["pack"][:, 1])
+    println("\n\n")
 end
 
 println("####### START OF EXAMPLES #######\n\n\n")

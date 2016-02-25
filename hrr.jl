@@ -3,9 +3,8 @@ module hrr
 # TODO: introduce in-place methods?
 # TODO: doc-strings?
 
-export cconv, vadd, invol, getidvec
+export cconv, vadd, invol, getidvec, associate
 
-typealias AssociativeMemory Vector{Tuple{AbstractVector, AbstractVector, AbstractString}}
 
 # BINDING -- circular convolution of two vectors with the same dimensions
 function cconv(x::Vector{Float64}, y::Vector{Float64})
@@ -60,7 +59,7 @@ function getidvec(dimensions::Integer = 512)
 end
 
 const threshold = 0.3
-function associate(input::Vector{Float64}, assoc_mem::AssociativeMemory)
+function associate(input::Vector{Float64}, associative_memory::Vector{Array{Float64, 2}})
     if isempty(input) || isempty(assoc_mem)
         throw(ArgumentError("arguments must not be empty"))
     end
