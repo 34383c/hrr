@@ -18,9 +18,15 @@ function cconv(x::Vector{Float64}, y::Vector{Float64})
     result = zeros(x)
     for i in 1:length(result)
         for j in 1:length(result)
-            result[i] += x[j] * y[mod((i - j) - 1, length(result)) + 1]
+            result[i] += x[j] * y[mod((i - j), length(result)) + 1]
         end
     end
+    #=result = zeros(x)
+    for i in 0:(length(result)-1)
+        for j in 0:(length(result)-1)
+            result[i+1] += x[j+1] * y[mod((i - j), length(result))+1]
+        end
+    end=#
     return result
 end
 

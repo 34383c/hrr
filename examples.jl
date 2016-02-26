@@ -4,7 +4,6 @@ using hrr
 # print vectors
 function printv(x::Vector{Float64})
     println(summary(x))
-    #println("    $(join(length(x) > 7 ? [x[1:3];"...";x[end-2:end]] : x, "  "))")
     print("    ")
     if length(x) > 7
         for i in x[1:3] @printf "%+.4f " i end
@@ -18,14 +17,22 @@ end
 
 function example1()
     println("Involution.")
-    println("Given a vector x = [1, 2, 3, 4, 5], the involution of x should ",
-            "return the vector [1, 5, 4, 3, 2].")
+
+    println("\na)  Given a vector x = [1, 2, 3, 4, 5], the involution of x should return the vector [1, 5, 4, 3, 2].")
+
+    println("\nx:")
     input = Vector{Float64}([1.0,2.0,3.0,4.0,5.0])
-    println("\nInput:")
     printv(input)
+
+    println("Involution of x:")
     output = hrr.invol(input)
-    println("Output:")
     printv(output)
+
+    println("\nb) Given a vector x, the involution of the involution of x should be x.")
+
+    println("\nInvolution of the involution of x:")
+    printv(hrr.invol(output))
+
     println("\n\n")
 end
 
@@ -33,12 +40,13 @@ function example2()
     # Dot product can be used to measure the similarity between two
     # vectors. For unit vectors:
     # if dot product is 0, the two vectors are very dissimilar
-    #     e.g. (not unit vectors, but same principle) dot([1,0,1,0],[0,1,0,1]) == 0
+    #     e.g. dot([1,0,1,0],[0,1,0,1]) == 0 (not unit vectors, but same principle)
     # if dot product is 1, the two vectors are the same
     #     e.g. dot(a,a) ~~ 1
     # if dot product is -1, the two vectors are the inverse of one another
     #     e.g. dot(a,-a) ~~ -1
     println("Circular convolution.")
+
     println("\na)  Given two uniformly distributed random vectors from the D-dimensional unit hypersphere, x and y, their circular convolution, xy, should be dissimilar to both of them.")
 
     println("x:")
@@ -53,6 +61,10 @@ function example2()
     xy = hrr.cconv(x, y)
     printv(xy)
 
+    @printf "\nvector norm of xy (before normalizing): %f\n" norm(xy)
+    #xy = xy / norm(xy)
+    #@printf "vector norm of xy (after normalizing):  %f\n\n" norm(xy)
+
     @printf "similarity between x and xy: %f\n" dot(x,xy)
     @printf "similarity between y and xy: %f\n" dot(y,xy)
 
@@ -65,6 +77,10 @@ function example2()
     xyy = hrr.cconv(xy, hrr.invol(y))
     printv(xyy)
 
+    @printf "\nvector norm of xyy (before normalizing): %f\n" norm(xyy)
+    #xyy = xyy / norm(xyy)
+    #@printf "vector norm of xyy (after normalizing):  %f\n\n" norm(xyy)
+
     @printf "similarity between xyy and x: %f\n" dot(xyy, x)
 
     println("y:")
@@ -73,6 +89,10 @@ function example2()
     println("xxy:")
     xxy = hrr.cconv(xy, hrr.invol(x))
     printv(xxy)
+
+    @printf "\nvector norm of xxy (before normalizing): %f\n" norm(xxy)
+    #xxy = xxy / norm(xxy)
+    #@printf "vector norm of xxy (after normalizing):  %f\n\n" norm(xxy)
 
     @printf "similarity between xxy and y: %f\n" dot(xxy, y)
 
