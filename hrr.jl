@@ -60,22 +60,25 @@ end
 
 const threshold = 0.3
 function associate(input::Vector{Float64}, associative_memory::Vector{Array{Float64, 2}})
-    if isempty(input) || isempty(assoc_mem)
+    if isempty(input) || isempty(associative_memory)
         throw(ArgumentError("arguments must not be empty"))
     end
 
     sum = zeros(input)
-    for (sp, id, name) in assoc_mem
-        similarity = dot(id, input)
-        scale = (similarity > threshold) ? 1 : 0
-        # if similarity > threshold
-        #     if sum != zeros(sum)
-        #         println("Found first id vector from assoc mem that exceeds the similarity threshold ($(name))")
-        #         sum = sp
-        #     else
-        #         println("OOPS! Similarity threshold was exceeded for more than one id vector from the assoc mem ($(name))")
-        sum += scale * sp
+    for iter in eachindex(associative_memory)
+        similarity = dot(associative_memory[iter][:, 1], input)
+        #scale = (similarity > threshold) ? 1 : 0
+        if similarity > threshold
+            if sum == zeros(sum)
+                println("Found first id vector from assoc mem that exceeds the similarity threshold ($(iter))")
+                sum = associative_memory[iter][:, 2]
+            else
+                 println("OOPS! Similarity threshold was exceeded for more than one id vector ($(iter))")
+            end
+        end
+        #sum += scale * associative_memory[iter][:, 2]
     end
+    if sum == zeros(sum) println("no match found...") end
     return sum
 end
 
